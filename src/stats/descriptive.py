@@ -94,18 +94,20 @@ def top_repeated_days(data: List[List[int]], n: int = 3) -> List[Tuple[int, int]
 
 def least_repeated_days(data: List[List[int]], n: int = 3) -> List[Tuple[int, int]]:
     """
-    Find N least repeated days with their counts.
+    Find N least repeated days with their counts, including days with zero occurrences.
     
     Args:
         data: List of 12 months with daily events
         n: Number of least frequent days to return
         
     Returns:
-        List of (day, count) tuples, sorted by frequency ascending
+        List of (day, count) tuples, sorted by frequency ascending, then day ascending
     """
     flat = [d for m in data for d in m]
     counter = collections.Counter(flat)
-    return sorted(counter.items(), key=lambda x: (x[1], x[0]))[:n]
+    all_days = [(day, counter.get(day, 0)) for day in range(1, 32)]
+    all_days.sort(key=lambda x: (x[1], x[0]))
+    return all_days[:n]
 
 
 def unique_days_per_month(data: List[List[int]]) -> List[int]:

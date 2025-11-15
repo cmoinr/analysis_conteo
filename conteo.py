@@ -160,12 +160,12 @@ def top_repeated_days(data):
     return top3
 
 def least_repeated_days(data, n: int = 3):
-    """Find the n least frequent days (excluding days with zero occurrences)."""
+    """Find the n days with the fewest occurrences, counting zeros."""
     flat = [day for month in data for day in month]
     counter = collections.Counter(flat)
-    # Sort ascending by count, then by day number for determinism
-    bottom = sorted(counter.items(), key=lambda x: (x[1], x[0]))[:n]
-    return bottom
+    all_days = [(day, counter.get(day, 0)) for day in range(1, 32)]
+    all_days.sort(key=lambda x: (x[1], x[0]))
+    return all_days[:n]
 
 
 def unique_days_per_month(data):
